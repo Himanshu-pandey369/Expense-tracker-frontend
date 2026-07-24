@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import api from "../api/axios";
+import { getProfile } from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -9,8 +9,8 @@ export function AuthProvider({ children }) {
 
   const fetchProfile = async () => {
     try {
-      const res = await api.get("/users/profile");
-      setUser(res.data.user);
+      const data = await getProfile();
+      setUser(data.user);
     } catch (err) {
       localStorage.removeItem("token");
       setUser(null);
