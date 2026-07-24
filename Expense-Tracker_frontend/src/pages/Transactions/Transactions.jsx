@@ -12,6 +12,7 @@ import { getTransactions } from "../../services/transactionService";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
@@ -28,13 +29,17 @@ export default function Transactions() {
 
   useEffect(() => {
     fetchTransactions();
-  }, []);
+  }, [search, filterType, filterCategory]);
 
   const fetchTransactions = async () => {
     try {
       setLoading(true);
 
-      const response = await getTransactions();
+      const response = await getTransactions({
+        search,
+        type: filterType,
+        category: filterCategory,
+      });
 
       setTransactions(response.transactions);
     } catch (error) {
@@ -58,11 +63,10 @@ export default function Transactions() {
     <DashboardLayout>
       <div className="space-y-8">
 
-        {/* Header */}
-
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center">
 
           <div>
+
             <h1 className="text-3xl font-bold">
               Transactions
             </h1>
@@ -70,18 +74,17 @@ export default function Transactions() {
             <p className="text-gray-500 mt-2">
               Manage all your income and expenses.
             </p>
+
           </div>
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl"
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-5 py-3 mt-4 md:mt-0"
           >
             + Add Transaction
           </button>
 
         </div>
-
-        {/* Filters */}
 
         <TransactionFilters
           search={search}
@@ -91,8 +94,6 @@ export default function Transactions() {
           filterCategory={filterCategory}
           setFilterCategory={setFilterCategory}
         />
-
-        {/* Table */}
 
         {loading ? (
           <div className="bg-white rounded-2xl border p-10 text-center">
@@ -106,15 +107,11 @@ export default function Transactions() {
           />
         )}
 
-        {/* Add */}
-
         <AddTransactionModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           refreshTransactions={fetchTransactions}
         />
-
-        {/* Edit */}
 
         <EditTransactionModal
           isOpen={isEditModalOpen}
@@ -122,8 +119,6 @@ export default function Transactions() {
           transaction={editingTransaction}
           refreshTransactions={fetchTransactions}
         />
-
-        {/* Delete */}
 
         <DeleteTransactionModal
           isOpen={isDeleteModalOpen}

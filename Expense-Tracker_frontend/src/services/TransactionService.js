@@ -1,7 +1,20 @@
-import api from "../api/axios";
+import api from "../API/axios";
 
-export const getTransactions = async () => {
-  const response = await api.get("/transactions");
+export const getTransactions = async ({
+  page = 1,
+  search = "",
+  type = "",
+  category = "",
+} = {}) => {
+  const response = await api.get("/transactions", {
+    params: {
+      page,
+      search,
+      type,
+      category,
+    },
+  });
+
   return response.data;
 };
 
