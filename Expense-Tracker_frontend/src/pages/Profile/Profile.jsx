@@ -62,7 +62,7 @@ export default function Profile() {
 
           {/* Top Banner */}
 
-          <div className="h-36 bg-gradient-to-r from-blue-600 to-indigo-600" />
+          <div className="h-36 bg-linear-to-r from-blue-600 to-indigo-600" />
 
           {/* Content */}
 

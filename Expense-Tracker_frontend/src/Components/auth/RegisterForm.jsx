@@ -41,7 +41,7 @@ export default function RegisterForm() {
 
       await login(response.token);
 
-      toast.success("Account created successfully!");
+      toast.success(`Welcome, ${response.user.name}! 🎉`);
 
       navigate("/dashboard");
     } catch (error) {

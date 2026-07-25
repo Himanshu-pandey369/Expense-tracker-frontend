@@ -44,7 +44,7 @@ export default function DashboardSkeleton() {
           >
             <Skeleton className="h-6 w-52" />
 
-            <Skeleton className="h-[320px] w-full mt-6" />
+            <Skeleton className="h-80 w-full mt-6" />
           </div>
         ))}
 

@@ -34,3 +34,19 @@ export const deleteTransaction = async (id) => {
   const response = await api.delete(`/transactions/${id}`);
   return response.data;
 };
+
+export const exportTransactions = async ({
+  search = "",
+  type = "",
+  category = "",
+} = {}) => {
+  const response = await api.get("/transactions/export", {
+    params: {
+      search,
+      type,
+      category,
+    },
+  });
+
+  return response.data;
+};
