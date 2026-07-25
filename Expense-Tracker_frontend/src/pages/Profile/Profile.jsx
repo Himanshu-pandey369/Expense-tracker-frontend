@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Mail, Calendar, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import ProfileSkeleton from "../../Components/Profile/ProfileSkeleton";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 
 import { getProfile } from "../../services/userService";
@@ -42,9 +42,7 @@ export default function Profile() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="bg-white rounded-2xl p-10 text-center">
-          Loading Profile...
-        </div>
+        <ProfileSkeleton />
       </DashboardLayout>
     );
   }

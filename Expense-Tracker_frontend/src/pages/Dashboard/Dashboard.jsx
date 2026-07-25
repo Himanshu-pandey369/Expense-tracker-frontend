@@ -5,13 +5,13 @@ import {
   TrendingDown,
   Receipt,
 } from "lucide-react";
-
+import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import SummaryCard from "../../components/dashboard/SummaryCard";
 import ExpenseChart from "../../components/dashboard/ExpenseChart";
 import CategoryChart from "../../components/dashboard/CategoryChart";
 import RecentTransactions from "../../components/dashboard/RecentTransaction";
-
+import QuickActions from "../../Components/dashboard/QuickAction";
 import {
   getDashboardSummary,
   getRecentTransactions,
@@ -58,11 +58,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="flex items-center justify-center h-[70vh]">
-          <p className="text-lg font-semibold text-gray-500">
-            Loading Dashboard...
-          </p>
-        </div>
+        <DashboardSkeleton />
       </DashboardLayout>
     );
   }
@@ -73,12 +69,12 @@ export default function Dashboard() {
 
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-4xl font-bold text-gray-900">
             Financial Dashboard
           </h1>
 
-          <p className="text-gray-500 mt-2">
-            Here's an overview of your finances.
+          <p className="text-gray-500 mt-3 text-lg">
+            Welcome back! Here's a quick overview of your finances.
           </p>
         </div>
 
@@ -108,10 +104,14 @@ export default function Dashboard() {
           <SummaryCard
             title="Transactions"
             amount={summary.totalTransactions}
+            isCurrency={false}
             icon={<Receipt className="text-white" size={28} />}
             bgColor="bg-purple-500"
           />
         </div>
+
+        {/* Quick Actions */}
+        <QuickActions />
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -1,4 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
+import TransactionCard from "./TransactionCard";
 
 export default function TransactionTable({
   transactions,
@@ -14,137 +15,151 @@ export default function TransactionTable({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow border overflow-hidden">
+    <>
 
-      <div className="overflow-x-auto">
+      <div className="lg:hidden space-y-4">
+        {transactions.map((transaction) => (
+          <TransactionCard
+            key={transaction._id}
+            transaction={transaction}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
 
-        <table className="min-w-full">
+      </div>
+      <div className="hidden lg:block bg-white rounded-2xl shadow border overflow-hidden">
 
-          <thead className="bg-gray-50">
+        <div className="overflow-x-auto">
 
-            <tr>
+          <table className="w-full">
 
-              <th className="px-6 py-4 text-left">
-                Title
-              </th>
+            <thead className="bg-gray-50">
 
-              <th className="px-6 py-4 text-left">
-                Category
-              </th>
+              <tr>
 
-              <th className="px-6 py-4 text-left">
-                Type
-              </th>
+                <th className="px-6 py-4 text-left font-semibold">
+                  Title
+                </th>
 
-              <th className="px-6 py-4 text-left">
-                Amount
-              </th>
+                <th className="px-6 py-4 text-left font-semibold">
+                  Category
+                </th>
 
-              <th className="px-6 py-4 text-left">
-                Date
-              </th>
+                <th className="px-6 py-4 text-left font-semibold">
+                  Type
+                </th>
 
-              <th className="px-6 py-4 text-center">
-                Actions
-              </th>
+                <th className="px-6 py-4 text-left font-semibold">
+                  Amount
+                </th>
 
-            </tr>
+                <th className="px-6 py-4 text-left font-semibold">
+                  Date
+                </th>
 
-          </thead>
-
-          <tbody>
-
-            {transactions.map((transaction) => (
-
-              <tr
-                key={transaction._id}
-                className="border-t hover:bg-gray-50"
-              >
-
-                <td className="px-6 py-4">
-                  {transaction.title}
-                </td>
-
-                <td className="px-6 py-4">
-                  {transaction.category}
-                </td>
-
-                <td className="px-6 py-4">
-
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      transaction.type === "income"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {transaction.type}
-                  </span>
-
-                </td>
-
-                <td
-                  className={`px-6 py-4 font-semibold ${
-                    transaction.type === "income"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {transaction.type === "income"
-                    ? "+"
-                    : "-"}
-                  ₹
-                  {transaction.amount.toLocaleString()}
-                </td>
-
-                <td className="px-6 py-4">
-                  {new Date(
-                    transaction.date
-                  ).toLocaleDateString()}
-                </td>
-
-                <td className="px-6 py-4">
-
-                  <div className="flex justify-center gap-3">
-
-                    <button
-                      onClick={() =>
-                        onEdit(transaction)
-                      }
-                      className="p-2 rounded-lg hover:bg-blue-100"
-                    >
-                      <Pencil
-                        size={18}
-                        className="text-blue-600"
-                      />
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        onDelete(transaction)
-                      }
-                      className="p-2 rounded-lg hover:bg-red-100"
-                    >
-                      <Trash2
-                        size={18}
-                        className="text-red-600"
-                      />
-                    </button>
-
-                  </div>
-
-                </td>
+                <th className="px-6 py-4 text-center font-semibold">
+                  Actions
+                </th>
 
               </tr>
 
-            ))}
+            </thead>
 
-          </tbody>
+            <tbody>
 
-        </table>
+              {transactions.map((transaction) => (
+
+                <tr
+                  key={transaction._id}
+                  className="border-t hover:bg-gray-50 transition"
+                >
+
+                  <td className="px-6 py-4">
+                    {transaction.title}
+                  </td>
+
+                  <td className="px-6 py-4">
+                    {transaction.category}
+                  </td>
+
+                  <td className="px-6 py-4">
+
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        transaction.type === "income"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {transaction.type}
+                    </span>
+
+                  </td>
+
+                  <td
+                    className={`px-6 py-4 font-semibold ${
+                      transaction.type === "income"
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {transaction.type === "income"
+                      ? "+"
+                      : "-"}
+                    ₹
+                    {transaction.amount.toLocaleString("en-IN")}
+                  </td>
+
+                  <td className="px-6 py-4">
+                    {new Date(
+                      transaction.date
+                    ).toLocaleDateString("en-IN")}
+                  </td>
+
+                  <td className="px-6 py-4">
+
+                    <div className="flex justify-center gap-3">
+
+                      <button
+                        onClick={() =>
+                          onEdit(transaction)
+                        }
+                        className="p-2 rounded-lg hover:bg-blue-100 transition"
+                      >
+                        <Pencil
+                          size={18}
+                          className="text-blue-600"
+                        />
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          onDelete(transaction)
+                        }
+                        className="p-2 rounded-lg hover:bg-red-100 transition"
+                      >
+                        <Trash2
+                          size={18}
+                          className="text-red-600"
+                        />
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
-
-    </div>
+    </>
   );
 }

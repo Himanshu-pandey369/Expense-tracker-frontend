@@ -2,6 +2,7 @@ import api from "../API/axios";
 
 export const getTransactions = async ({
   page = 1,
+  limit = 10,
   search = "",
   type = "",
   category = "",
@@ -9,6 +10,7 @@ export const getTransactions = async ({
   const response = await api.get("/transactions", {
     params: {
       page,
+      limit,
       search,
       type,
       category,

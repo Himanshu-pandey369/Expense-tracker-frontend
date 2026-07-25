@@ -31,20 +31,33 @@ export default function ExpenseChart({ data }) {
   }));
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-      <h2 className="text-xl font-semibold mb-6">
-        Monthly Expenses
-      </h2>
+    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm hover:shadow-lg transition p-6">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold">
+          Monthly Expenses
+        </h2>
+
+        <p className="text-sm text-gray-500 mt-1">
+          Expense trend over time
+        </p>
+      </div>
 
       <ResponsiveContainer width="100%" height={320}>
         <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid
+            strokeDasharray="4 4"
+            vertical={false}
+          />
 
           <XAxis dataKey="month" />
 
           <YAxis />
 
-          <Tooltip />
+          <Tooltip
+            formatter={(value) =>
+              `₹${Number(value).toLocaleString("en-IN")}`
+            }
+          />
 
           <Bar
             dataKey="expense"

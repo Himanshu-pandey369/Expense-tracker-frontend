@@ -19,10 +19,16 @@ const COLORS = [
 export default function CategoryChart({ data }) {
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 h-[420px] flex flex-col justify-center items-center">
-        <h2 className="text-xl font-semibold mb-6">
-          Expense by Category
-        </h2>
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 h-105 flex flex-col justify-center items-center">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold">
+            Expense by Category
+          </h2>
+
+          <p className="text-sm text-gray-500 mt-1">
+            Category-wise spending
+          </p>
+        </div>
 
         <div className="text-center">
           <div className="text-5xl mb-4">📊</div>
@@ -36,10 +42,9 @@ export default function CategoryChart({ data }) {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-      <h2 className="text-xl font-semibold mb-6">
-        Expense by Category
-      </h2>
+    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm hover:shadow-lg transition p-6">      <h2 className="text-xl font-semibold mb-6">
+      Expense by Category
+    </h2>
 
       <ResponsiveContainer
         width="100%"
@@ -61,9 +66,16 @@ export default function CategoryChart({ data }) {
             ))}
           </Pie>
 
-          <Tooltip />
+          <Tooltip
+            formatter={(value) =>
+              `₹${Number(value).toLocaleString("en-IN")}`
+            }
+          />
 
-          <Legend />
+          <Legend
+            verticalAlign="bottom"
+            height={40}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>

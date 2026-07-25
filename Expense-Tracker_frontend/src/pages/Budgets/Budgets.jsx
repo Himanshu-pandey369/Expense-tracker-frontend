@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
+import {
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
-
+import BudgetSkeleton from "../../Components/budgets/BudgetSkeleton";
 import BudgetCard from "../../components/budgets/BudgetCard";
 import AddBudgetModal from "../../components/budgets/AddBudgetModal";
 import EditBudgetModal from "../../components/budgets/EditBudgetModel";
@@ -10,8 +14,10 @@ import DeleteBudgetModal from "../../components/budgets/DeleteBudget";
 import { getBudgets } from "../../services/budgetService";
 
 export default function Budgets() {
-  const [budgets, setBudgets] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -28,6 +34,18 @@ export default function Budgets() {
     fetchBudgets();
   }, []);
 
+  // Open Create Budget modal from Dashboard Quick Action
+  useEffect(() => {
+    if (location.state?.openAddModal) {
+      setIsAddOpen(true);
+
+      navigate(location.pathname, {
+        replace: true,
+        state: {},
+      });
+    }
+  }, [location, navigate]);
+
   const fetchBudgets = async () => {
     try {
       setLoading(true);
@@ -35,6 +53,8 @@ export default function Budgets() {
       const response = await getBudgets();
 
       setBudgets(response.budgets);
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -52,8 +72,9 @@ export default function Budgets() {
 
   return (
     <DashboardLayout>
-
       <div className="space-y-8">
+
+        {/* Header */}
 
         <div className="flex flex-col md:flex-row md:justify-between md:items-center">
 
@@ -78,10 +99,10 @@ export default function Budgets() {
 
         </div>
 
+        {/* Content */}
+
         {loading ? (
-          <div className="bg-white rounded-2xl border p-10 text-center">
-            Loading...
-          </div>
+          <BudgetSkeleton />
         ) : budgets.length === 0 ? (
           <div className="bg-white rounded-2xl border p-12 text-center">
 
@@ -92,6 +113,10 @@ export default function Budgets() {
             <h2 className="text-2xl font-semibold mt-5">
               No Budgets Yet
             </h2>
+
+            <p className="text-gray-500 mt-2">
+              Create your first monthly budget.
+            </p>
 
           </div>
         ) : (
@@ -108,6 +133,8 @@ export default function Budgets() {
 
           </div>
         )}
+
+        {/* Modals */}
 
         <AddBudgetModal
           isOpen={isAddOpen}
@@ -130,7 +157,6 @@ export default function Budgets() {
         />
 
       </div>
-
     </DashboardLayout>
   );
 }

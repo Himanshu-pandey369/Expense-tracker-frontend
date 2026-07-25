@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-
+import PublicRoute from "./PublicRoute";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -13,8 +13,12 @@ export default function AppRoutes() {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<PublicRoute>
+        <Login />
+      </PublicRoute>} />
+      <Route path="/register" element={<PublicRoute>
+        <Register />
+      </PublicRoute>} />
 
       {/* Protected Routes */}
       <Route
