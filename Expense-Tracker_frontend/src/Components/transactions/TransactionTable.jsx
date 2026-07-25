@@ -6,9 +6,9 @@ export default function TransactionTable({
   onEdit,
   onDelete,
 }) {
-  if (transactions.length === 0) {
+  if (!transactions || transactions.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border p-10 text-center">
+      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-gray-300">
         No Transactions Found
       </div>
     );
@@ -16,8 +16,8 @@ export default function TransactionTable({
 
   return (
     <>
-
-      <div className="lg:hidden space-y-4">
+      {/* Mobile Cards */}
+      <div className="space-y-4 lg:hidden">
         {transactions.map((transaction) => (
           <TransactionCard
             key={transaction._id}
@@ -26,75 +26,64 @@ export default function TransactionTable({
             onDelete={onDelete}
           />
         ))}
-
       </div>
-      <div className="hidden lg:block bg-white rounded-2xl shadow border overflow-hidden">
 
+      {/* Desktop Table */}
+      <div className="hidden overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:block">
         <div className="overflow-x-auto">
-
           <table className="w-full">
-
-            <thead className="bg-gray-50">
-
+            <thead className="bg-gray-50 dark:bg-slate-800">
               <tr>
-
-                <th className="px-6 py-4 text-left font-semibold">
+                <th className="px-6 py-4 text-left font-semibold text-gray-700 dark:text-gray-200">
                   Title
                 </th>
 
-                <th className="px-6 py-4 text-left font-semibold">
+                <th className="px-6 py-4 text-left font-semibold text-gray-700 dark:text-gray-200">
                   Category
                 </th>
 
-                <th className="px-6 py-4 text-left font-semibold">
+                <th className="px-6 py-4 text-left font-semibold text-gray-700 dark:text-gray-200">
                   Type
                 </th>
 
-                <th className="px-6 py-4 text-left font-semibold">
+                <th className="px-6 py-4 text-left font-semibold text-gray-700 dark:text-gray-200">
                   Amount
                 </th>
 
-                <th className="px-6 py-4 text-left font-semibold">
+                <th className="px-6 py-4 text-left font-semibold text-gray-700 dark:text-gray-200">
                   Date
                 </th>
 
-                <th className="px-6 py-4 text-center font-semibold">
+                <th className="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-200">
                   Actions
                 </th>
-
               </tr>
-
             </thead>
 
             <tbody>
-
               {transactions.map((transaction) => (
-
                 <tr
                   key={transaction._id}
-                  className="border-t hover:bg-gray-50 transition"
+                  className="border-t border-gray-200 transition hover:bg-gray-50 dark:border-slate-800 dark:hover:bg-slate-800/60"
                 >
-
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-gray-900 dark:text-white">
                     {transaction.title}
                   </td>
 
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
                     {transaction.category}
                   </td>
 
                   <td className="px-6 py-4">
-
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
                         transaction.type === "income"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
+                          ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+                          : "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300"
                       }`}
                     >
                       {transaction.type}
                     </span>
-
                   </td>
 
                   <td
@@ -104,61 +93,36 @@ export default function TransactionTable({
                         : "text-red-600"
                     }`}
                   >
-                    {transaction.type === "income"
-                      ? "+"
-                      : "-"}
-                    ₹
-                    {transaction.amount.toLocaleString("en-IN")}
+                    {transaction.type === "income" ? "+" : "-"}₹
+                    {Number(transaction.amount).toLocaleString("en-IN")}
+                  </td>
+
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                    {new Date(transaction.date).toLocaleDateString("en-IN")}
                   </td>
 
                   <td className="px-6 py-4">
-                    {new Date(
-                      transaction.date
-                    ).toLocaleDateString("en-IN")}
-                  </td>
-
-                  <td className="px-6 py-4">
-
                     <div className="flex justify-center gap-3">
-
                       <button
-                        onClick={() =>
-                          onEdit(transaction)
-                        }
-                        className="p-2 rounded-lg hover:bg-blue-100 transition"
+                        onClick={() => onEdit(transaction)}
+                        className="rounded-lg p-2 transition hover:bg-blue-100 dark:hover:bg-blue-950"
                       >
-                        <Pencil
-                          size={18}
-                          className="text-blue-600"
-                        />
+                        <Pencil size={18} className="text-blue-600" />
                       </button>
 
                       <button
-                        onClick={() =>
-                          onDelete(transaction)
-                        }
-                        className="p-2 rounded-lg hover:bg-red-100 transition"
+                        onClick={() => onDelete(transaction)}
+                        className="rounded-lg p-2 transition hover:bg-red-100 dark:hover:bg-red-950"
                       >
-                        <Trash2
-                          size={18}
-                          className="text-red-600"
-                        />
+                        <Trash2 size={18} className="text-red-600" />
                       </button>
-
                     </div>
-
                   </td>
-
                 </tr>
-
               ))}
-
             </tbody>
-
           </table>
-
         </div>
-
       </div>
     </>
   );

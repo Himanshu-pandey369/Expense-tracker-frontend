@@ -1,45 +1,45 @@
 import { Link } from "react-router-dom";
 
 export default function RecentTransactions({ transactions }) {
-if (!transactions || transactions.length === 0) {
-  return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mt-8">
-      <h2 className="text-xl font-semibold mb-6">
-        Recent Transactions
-      </h2>
+  if (!transactions || transactions.length === 0) {
+    return (
+      <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <h2 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">
+          Recent Transactions
+        </h2>
 
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="text-5xl mb-4">📭</div>
+        <div className="flex flex-col items-center justify-center py-12">
+          <div className="mb-4 text-5xl">📭</div>
 
-        <h3 className="text-lg font-semibold text-gray-700">
-          No Transactions Yet
-        </h3>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+            No Transactions Yet
+          </h3>
 
-        <p className="text-gray-500 mt-2 text-center">
-          Start tracking your expenses by adding your first transaction.
-        </p>
+          <p className="mt-2 text-center text-gray-500 dark:text-gray-400">
+            Start tracking your expenses by adding your first transaction.
+          </p>
 
-        <Link
-          to="/transactions"
-          className="mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          Add Transaction
-        </Link>
+          <Link
+            to="/transactions"
+            className="mt-6 rounded-lg bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700"
+          >
+            Add Transaction
+          </Link>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
-    <div className="bg-white rounded-2xl border p-6 mt-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">
+    <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Recent Transactions
         </h2>
 
         <Link
           to="/transactions"
-          className="text-blue-600 hover:underline"
+          className="text-blue-600 transition hover:underline dark:text-blue-400"
         >
           View All
         </Link>
@@ -49,14 +49,14 @@ if (!transactions || transactions.length === 0) {
         {transactions.map((transaction) => (
           <div
             key={transaction._id}
-            className="flex justify-between items-center border-b pb-3"
+            className="flex items-center justify-between border-b border-gray-200 pb-3 dark:border-slate-800"
           >
             <div>
-              <h3 className="font-medium">
+              <h3 className="font-medium text-gray-900 dark:text-white">
                 {transaction.title}
               </h3>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 {transaction.category}
               </p>
             </div>
@@ -65,16 +65,16 @@ if (!transactions || transactions.length === 0) {
               <p
                 className={`font-semibold ${
                   transaction.type === "income"
-                    ? "text-green-600"
-                    : "text-red-600"
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-red-600 dark:text-red-400"
                 }`}
               >
                 {transaction.type === "income" ? "+" : "-"}₹
-                {transaction.amount}
+                {Number(transaction.amount).toLocaleString("en-IN")}
               </p>
 
-              <p className="text-xs text-gray-400">
-                {new Date(transaction.date).toLocaleDateString()}
+              <p className="text-xs text-gray-400 dark:text-gray-500">
+                {new Date(transaction.date).toLocaleDateString("en-IN")}
               </p>
             </div>
           </div>

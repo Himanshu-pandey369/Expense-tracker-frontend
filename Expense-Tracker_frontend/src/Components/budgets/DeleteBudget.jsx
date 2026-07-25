@@ -6,7 +6,7 @@ import { deleteBudget } from "../../services/budgetService";
 export default function DeleteBudgetModal({
   isOpen,
   onClose,
- budget,
+  budget,
   refreshBudgets,
 }) {
   if (!isOpen || !budget) return null;
@@ -16,68 +16,56 @@ export default function DeleteBudgetModal({
       await deleteBudget(budget._id);
 
       toast.success("Budget Deleted");
-
       refreshBudgets();
-
       onClose();
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
-          "Failed to delete budget"
+        error.response?.data?.message || "Failed to delete budget"
       );
     }
   };
 
   return (
     <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
       onClick={onClose}
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 p-4"
     >
       <div
+        className="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl dark:bg-slate-900"
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8"
       >
         <div className="flex justify-center">
-
-          <div className="bg-red-100 p-4 rounded-full">
-
-            <Trash2
-              size={38}
-              className="text-red-600"
-            />
-
+          <div className="rounded-full bg-red-100 p-4 dark:bg-red-950">
+            <Trash2 size={38} className="text-red-600 dark:text-red-300" />
           </div>
-
         </div>
 
-        <h2 className="text-2xl font-bold text-center mt-6">
+        <h2 className="mt-6 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Delete Budget
         </h2>
 
-        <p className="text-center text-gray-500 mt-3">
+        <p className="mt-3 text-center text-gray-500 dark:text-gray-400">
           Are you sure you want to delete
         </p>
 
-        <p className="font-semibold text-center mt-2">
-          "{budget.category}" Budget?
+        <p className="mt-2 text-center font-semibold text-gray-900 dark:text-white">
+          "{budget.category}" budget?
         </p>
 
-        <div className="flex gap-4 mt-8">
-
+        <div className="mt-8 flex gap-4">
           <button
             onClick={onClose}
-            className="flex-1 border rounded-xl py-3 hover:bg-gray-100"
+            className="flex-1 rounded-xl border border-gray-300 py-3 text-gray-900 transition hover:bg-gray-100 dark:border-slate-700 dark:text-white dark:hover:bg-slate-800"
           >
             Cancel
           </button>
 
           <button
             onClick={handleDelete}
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-xl py-3"
+            className="flex-1 rounded-xl bg-red-600 py-3 text-white transition hover:bg-red-700"
           >
             Delete
           </button>
-
         </div>
       </div>
     </div>

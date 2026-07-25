@@ -19,39 +19,51 @@ export default function EditTransactionModal({
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(transactionSchema),
+    defaultValues: {
+      type: "expense",
+      category: "Food",
+      note: "",
+    },
   });
 
   useEffect(() => {
     if (transaction) {
       reset({
-        title: transaction.title,
-        amount: transaction.amount,
-        type: transaction.type,
-        category: transaction.category,
-        date: transaction.date?.split("T")[0],
+        title: transaction.title || "",
+        amount: transaction.amount || "",
+        type: transaction.type || "expense",
+        category: transaction.category || "Food",
+        date: transaction.date
+          ? new Date(transaction.date).toISOString().split("T")[0]
+          : new Date().toISOString().split("T")[0],
         note: transaction.note || "",
       });
     }
   }, [transaction, reset]);
 
   const closeModal = () => {
-    reset();
+    reset({
+      type: "expense",
+      category: "Food",
+      note: "",
+      date: new Date().toISOString().split("T")[0],
+    });
     onClose();
   };
 
   const onSubmit = async (data) => {
     try {
-      await updateTransaction(transaction._id, data);
+      await updateTransaction(transaction._id, {
+        ...data,
+        amount: Number(data.amount),
+      });
 
       toast.success("Transaction Updated Successfully");
-
       refreshTransactions();
-
       closeModal();
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
-          "Failed to update transaction"
+        error.response?.data?.message || "Failed to update transaction"
       );
     }
   };
@@ -60,168 +72,123 @@ export default function EditTransactionModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
       onClick={closeModal}
     >
       <div
+        className="flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900"
         onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh]"
       >
-        {/* Header */}
-
-        <div className="flex items-center justify-between border-b px-6 py-5">
-          <h2 className="text-2xl font-bold text-gray-800">
+        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5 dark:border-slate-800">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             Edit Transaction
           </h2>
 
           <button
             onClick={closeModal}
-            className="text-3xl text-gray-400 hover:text-gray-700 transition"
+            className="text-3xl leading-none text-gray-400 transition hover:text-gray-700 dark:hover:text-gray-200"
           >
             ×
           </button>
         </div>
 
-        {/* Form */}
-
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="overflow-y-auto p-6 space-y-5"
+          className="space-y-5 overflow-y-auto p-6"
         >
-          {/* Title */}
-
           <div>
-            <label className="block text-sm font-semibold mb-2">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Title
             </label>
-
             <input
               {...register("title")}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
-
-            <p className="text-red-500 text-sm mt-1">
+            <p className="mt-1 text-sm text-red-500">
               {errors.title?.message}
             </p>
           </div>
 
-          {/* Amount */}
-
           <div>
-            <label className="block text-sm font-semibold mb-2">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Amount
             </label>
-
             <input
               type="number"
               {...register("amount")}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
-
-            <p className="text-red-500 text-sm mt-1">
+            <p className="mt-1 text-sm text-red-500">
               {errors.amount?.message}
             </p>
           </div>
 
-          {/* Type */}
-
           <div>
-            <label className="block text-sm font-semibold mb-2">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Type
             </label>
-
             <select
               {...register("type")}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             >
-              <option value="income">
-                Income
-              </option>
-
-              <option value="expense">
-                Expense
-              </option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
             </select>
-
-            <p className="text-red-500 text-sm mt-1">
+            <p className="mt-1 text-sm text-red-500">
               {errors.type?.message}
             </p>
           </div>
 
-          {/* Category */}
-
           <div>
-            <label className="block text-sm font-semibold mb-2">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Category
             </label>
-
             <select
               {...register("category")}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             >
               <option value="Food">Food</option>
-
               <option value="Travel">Travel</option>
-
               <option value="Shopping">Shopping</option>
-
-              <option value="Entertainment">
-                Entertainment
-              </option>
-
-              <option value="Salary">
-                Salary
-              </option>
-
-              <option value="Others">
-                Others
-              </option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Salary">Salary</option>
+              <option value="Others">Others</option>
             </select>
-
-            <p className="text-red-500 text-sm mt-1">
+            <p className="mt-1 text-sm text-red-500">
               {errors.category?.message}
             </p>
           </div>
 
-          {/* Date */}
-
           <div>
-            <label className="block text-sm font-semibold mb-2">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Date
             </label>
-
             <input
               type="date"
               {...register("date")}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
-
-            <p className="text-red-500 text-sm mt-1">
+            <p className="mt-1 text-sm text-red-500">
               {errors.date?.message}
             </p>
           </div>
 
-          {/* Note */}
-
           <div>
-            <label className="block text-sm font-semibold mb-2">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Note
             </label>
-
             <textarea
               rows={4}
               {...register("note")}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
           </div>
-
-          {/* Footer */}
 
           <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={closeModal}
-              className="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition"
+              className="rounded-xl border border-gray-300 px-6 py-3 text-gray-900 transition hover:bg-gray-100 dark:border-slate-700 dark:text-white dark:hover:bg-slate-800"
             >
               Cancel
             </button>
@@ -229,11 +196,9 @@ export default function EditTransactionModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700 disabled:opacity-50"
             >
-              {isSubmitting
-                ? "Updating..."
-                : "Update Transaction"}
+              {isSubmitting ? "Updating..." : "Update Transaction"}
             </button>
           </div>
         </form>

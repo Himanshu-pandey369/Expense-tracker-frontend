@@ -5,13 +5,14 @@ import {
   Wallet,
   User,
   X,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useTheme } from "../../Context/ThemeContext";
 
-export default function Sidebar({
-  isOpen,
-  setIsOpen,
-}) {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
+  const { darkMode, toggleTheme } = useTheme();
 
   const menu = [
     {
@@ -39,79 +40,68 @@ export default function Sidebar({
   return (
     <>
       {/* Overlay */}
-
       <div
         onClick={() => setIsOpen(false)}
-        className={`fixed inset-0 bg-black/40 z-40 lg:hidden transition-opacity ${
-          isOpen
-            ? "opacity-100 visible"
-            : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden ${isOpen ? "visible opacity-100" : "invisible opacity-0"
+          }`}
       />
 
       {/* Sidebar */}
-
       <aside
-        className={`
-        fixed top-0 left-0 h-screen w-64 bg-slate-900 text-white z-50
-        transform transition-transform duration-300
-
-        ${
-          isOpen
-            ? "translate-x-0"
-            : "-translate-x-full"
-        }
-
-        lg:translate-x-0
-      `}
+        className={`fixed top-0 left-0 z-50 flex h-screen w-64 flex-col
+          border-r border-slate-800 bg-slate-900 text-white
+          transition-transform duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-950
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0`}
       >
         {/* Header */}
-
-        <div className="flex items-center justify-between p-6 border-b border-slate-700">
-
-          <h1 className="text-3xl font-bold">
-            SpendWise
-          </h1>
+        <div className="flex items-center justify-between border-b border-slate-800 p-6">
+          <h1 className="text-3xl font-bold tracking-tight">SpendWise</h1>
 
           <button
-            className="lg:hidden"
+            className="text-slate-300 transition hover:text-white lg:hidden"
             onClick={() => setIsOpen(false)}
           >
             <X />
           </button>
-
         </div>
 
-        {/* Menu */}
-
-        <nav className="mt-8 px-4 space-y-2">
-
+        {/* Navigation */}
+        <nav className="mt-8 flex-1 px-4 space-y-2">
           {menu.map((item) => {
             const Icon = item.icon;
-
-            const active =
-              location.pathname === item.path;
+            const active = location.pathname === item.path;
 
             return (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition
-
-                ${
-                  active
-                    ? "bg-blue-600 text-white"
-                    : "hover:bg-slate-800 text-gray-300"
-                }`}
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all ${active
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                  }`}
               >
                 <Icon size={20} />
-
-                {item.name}
+                <span className="font-medium">{item.name}</span>
               </Link>
             );
           })}
         </nav>
+
+        {/* Theme Toggle */}
+        <div className="border-t border-slate-800 p-4 lg:hidden">
+          <button
+            onClick={toggleTheme}
+            className="flex w-full items-center justify-center gap-3 rounded-xl bg-slate-800 px-4 py-3 text-slate-200 transition hover:bg-slate-700"
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+
+            <span className="font-medium">
+              {darkMode ? "Light Mode" : "Dark Mode"}
+            </span>
+          </button>
+        </div>
       </aside>
     </>
   );

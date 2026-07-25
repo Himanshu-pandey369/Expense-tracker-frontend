@@ -160,28 +160,28 @@ export default function Transactions() {
   };
 
   const handleExportPDF = async () => {
-  try {
-    const response = await exportTransactions({
-      search,
-      type: filterType,
-      category: filterCategory,
-    });
+    try {
+      const response = await exportTransactions({
+        search,
+        type: filterType,
+        category: filterCategory,
+      });
 
-    if (!response.transactions.length) {
-      toast.error("No transactions to export.");
-      return;
+      if (!response.transactions.length) {
+        toast.error("No transactions to export.");
+        return;
+      }
+
+      exportTransactionsPDF(response.transactions);
+
+      setShowExportMenu(false);
+
+      toast.success("PDF exported successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to export PDF.");
     }
-
-    exportTransactionsPDF(response.transactions);
-
-    setShowExportMenu(false);
-
-    toast.success("PDF exported successfully!");
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to export PDF.");
-  }
-};
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -220,13 +220,13 @@ export default function Transactions() {
             </button>
 
             {showExportMenu && (
-              <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border z-50 overflow-hidden">
+              <div className="absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900">
                 <button
                   onClick={() => {
                     handleExportPDF();
                     setShowExportMenu(false);
                   }}
-                  className="w-full text-left px-4 py-3 hover:bg-gray-100"
+                  className="w-full px-4 py-3 text-left text-gray-700 transition hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
                 >
                   📄 Export PDF
                 </button>
@@ -236,7 +236,7 @@ export default function Transactions() {
                     handleExportCSV();
                     setShowExportMenu(false);
                   }}
-                  className="w-full text-left px-4 py-3 hover:bg-gray-100"
+                  className="w-full px-4 py-3 text-left text-gray-700 transition hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
                 >
                   📊 Export CSV
                 </button>

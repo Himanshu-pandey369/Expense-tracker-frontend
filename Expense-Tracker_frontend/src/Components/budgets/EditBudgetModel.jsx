@@ -14,24 +14,34 @@ export default function EditBudgetModal({
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting },
-  } = useForm();
+    formState: { isSubmitting, errors },
+  } = useForm({
+    defaultValues: {
+      category: "",
+      amount: "",
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+    },
+  });
 
   useEffect(() => {
     if (budget) {
       reset({
-        category: budget.category,
-        amount: budget.budget,
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
+        category: budget.category || "",
+        amount: budget.budget || "",
+        month: budget.month || new Date().getMonth() + 1,
+        year: budget.year || new Date().getFullYear(),
       });
     }
   }, [budget, reset]);
 
-  if (!isOpen || !budget) return null;
-
   const closeModal = () => {
-    reset();
+    reset({
+      category: "",
+      amount: "",
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+    });
     onClose();
   };
 
@@ -44,36 +54,35 @@ export default function EditBudgetModal({
         year: Number(data.year),
       });
 
-      toast.success("Budget Updated");
-
+      toast.success("Budget Updated Successfully");
       refreshBudgets();
-
       closeModal();
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
-          "Failed to update budget"
+        error.response?.data?.message || "Failed to update budget"
       );
     }
   };
 
+  if (!isOpen || !budget) return null;
+
   return (
     <div
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
       onClick={closeModal}
     >
       <div
-        className="bg-white rounded-3xl w-full max-w-lg shadow-2xl"
+        className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center border-b px-6 py-5">
-          <h2 className="text-2xl font-bold">
+        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5 dark:border-slate-800">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             Edit Budget
           </h2>
 
           <button
             onClick={closeModal}
-            className="text-3xl text-gray-400 hover:text-black"
+            className="text-3xl leading-none text-gray-400 transition hover:text-gray-700 dark:hover:text-gray-200"
           >
             ×
           </button>
@@ -81,82 +90,99 @@ export default function EditBudgetModal({
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="p-6 space-y-5"
+          className="space-y-5 overflow-y-auto p-6"
         >
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Category
             </label>
 
             <select
-              {...register("category")}
-              className="w-full border rounded-xl px-4 py-3"
+              {...register("category", { required: "Category is required" })}
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             >
+              <option value="">Select Category</option>
               <option value="Food">Food</option>
               <option value="Travel">Travel</option>
               <option value="Shopping">Shopping</option>
-              <option value="Entertainment">
-                Entertainment
-              </option>
+              <option value="Entertainment">Entertainment</option>
               <option value="Salary">Salary</option>
               <option value="Others">Others</option>
             </select>
+            <p className="mt-1 text-sm text-red-500">{errors.category?.message}</p>
           </div>
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Budget Amount
             </label>
 
             <input
               type="number"
-              {...register("amount")}
-              className="w-full border rounded-xl px-4 py-3"
+              placeholder="5000"
+              {...register("amount", { required: "Amount is required" })}
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
+            <p className="mt-1 text-sm text-red-500">{errors.amount?.message}</p>
           </div>
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Month
             </label>
 
-            <input
-              type="number"
-              min={1}
-              max={12}
+            <select
               {...register("month")}
-              className="w-full border rounded-xl px-4 py-3"
-            />
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            >
+              {[
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+              ].map((month, index) => (
+                <option key={month} value={index + 1}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Year
             </label>
 
             <input
               type="number"
               {...register("year")}
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-3">
+          <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={closeModal}
-              className="border rounded-xl px-6 py-3 hover:bg-gray-100"
+              className="rounded-xl border border-gray-300 px-6 py-3 text-gray-900 transition hover:bg-gray-100 dark:border-slate-700 dark:text-white dark:hover:bg-slate-800"
             >
               Cancel
             </button>
 
             <button
+              type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 py-3"
+              className="rounded-xl bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700 disabled:opacity-50"
             >
-              {isSubmitting
-                ? "Updating..."
-                : "Update Budget"}
+              {isSubmitting ? "Updating..." : "Update Budget"}
             </button>
           </div>
         </form>

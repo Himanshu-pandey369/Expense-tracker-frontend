@@ -6,6 +6,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useTheme } from "../../Context/ThemeContext";
 
 const COLORS = [
   "#3B82F6",
@@ -17,23 +18,25 @@ const COLORS = [
 ];
 
 export default function CategoryChart({ data }) {
+  const { darkMode } = useTheme();
+
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 h-105 flex flex-col justify-center items-center">
-        <div className="mb-6">
-          <h2 className="text-xl font-bold">
+      <div className="flex h-105 flex-col items-center justify-center rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mb-6 text-center">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             Expense by Category
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Category-wise spending
           </p>
         </div>
 
         <div className="text-center">
-          <div className="text-5xl mb-4">📊</div>
+          <div className="mb-4 text-5xl">📊</div>
 
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400">
             No category data available.
           </p>
         </div>
@@ -42,25 +45,31 @@ export default function CategoryChart({ data }) {
   }
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm hover:shadow-lg transition p-6">      <h2 className="text-xl font-semibold mb-6">
-      Expense by Category
-    </h2>
+    <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          Expense by Category
+        </h2>
 
-      <ResponsiveContainer
-        width="100%"
-        height={320}
-      >
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Category-wise spending
+        </p>
+      </div>
+
+      <ResponsiveContainer width="100%" height={320}>
         <PieChart>
           <Pie
             data={data}
             dataKey="total"
             nameKey="category"
             outerRadius={110}
-            label
+            label={({ percent }) =>
+              `${((percent || 0) * 100).toFixed(0)}%`
+            }
           >
             {data.map((entry, index) => (
               <Cell
-                key={index}
+                key={entry.category}
                 fill={COLORS[index % COLORS.length]}
               />
             ))}
@@ -70,11 +79,28 @@ export default function CategoryChart({ data }) {
             formatter={(value) =>
               `₹${Number(value).toLocaleString("en-IN")}`
             }
+            contentStyle={{
+              backgroundColor: darkMode ? "#0F172A" : "#FFFFFF",
+              border: `1px solid ${
+                darkMode ? "#334155" : "#E5E7EB"
+              }`,
+              borderRadius: "12px",
+              color: darkMode ? "#F8FAFC" : "#111827",
+            }}
+            labelStyle={{
+              color: darkMode ? "#CBD5E1" : "#374151",
+            }}
+            itemStyle={{
+              color: darkMode ? "#60A5FA" : "#2563EB",
+            }}
           />
 
           <Legend
             verticalAlign="bottom"
             height={40}
+            wrapperStyle={{
+              color: darkMode ? "#CBD5E1" : "#374151",
+            }}
           />
         </PieChart>
       </ResponsiveContainer>

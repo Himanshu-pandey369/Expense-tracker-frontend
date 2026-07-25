@@ -69,11 +69,11 @@ export default function Dashboard() {
 
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
             Financial Dashboard
           </h1>
 
-          <p className="text-gray-500 mt-3 text-lg">
+          <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">
             Welcome back! Here's a quick overview of your finances.
           </p>
         </div>

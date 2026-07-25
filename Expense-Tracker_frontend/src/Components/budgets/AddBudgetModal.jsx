@@ -43,7 +43,6 @@ export default function AddBudgetModal({
       toast.success("Budget Created Successfully");
 
       refreshBudgets();
-
       closeModal();
     } catch (error) {
       toast.error(
@@ -56,39 +55,37 @@ export default function AddBudgetModal({
   return (
     <div
       onClick={closeModal}
-      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-lg"
+        className="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900"
       >
         {/* Header */}
 
-        <div className="flex items-center justify-between px-6 py-5 border-b">
-
-          <h2 className="text-2xl font-bold">
+        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5 dark:border-slate-800">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             Create Budget
           </h2>
 
           <button
             onClick={closeModal}
-            className="text-3xl text-gray-400 hover:text-black"
+            className="text-3xl leading-none text-gray-400 transition hover:text-gray-700 dark:hover:text-gray-200"
           >
             ×
           </button>
-
         </div>
 
         {/* Form */}
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="p-6 space-y-5"
+          className="space-y-5 overflow-y-auto p-6"
         >
           {/* Category */}
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Category
             </label>
 
@@ -96,38 +93,22 @@ export default function AddBudgetModal({
               {...register("category", {
                 required: true,
               })}
-              className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             >
-              <option value="">
-                Select Category
-              </option>
-
+              <option value="">Select Category</option>
               <option value="Food">Food</option>
-
               <option value="Travel">Travel</option>
-
-              <option value="Shopping">
-                Shopping
-              </option>
-
-              <option value="Entertainment">
-                Entertainment
-              </option>
-
-              <option value="Salary">
-                Salary
-              </option>
-
-              <option value="Others">
-                Others
-              </option>
+              <option value="Shopping">Shopping</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Salary">Salary</option>
+              <option value="Others">Others</option>
             </select>
           </div>
 
           {/* Amount */}
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Budget Amount
             </label>
 
@@ -137,20 +118,20 @@ export default function AddBudgetModal({
               {...register("amount", {
                 required: true,
               })}
-              className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
           </div>
 
           {/* Month */}
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Month
             </label>
 
             <select
               {...register("month")}
-              className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             >
               {[
                 "January",
@@ -166,10 +147,7 @@ export default function AddBudgetModal({
                 "November",
                 "December",
               ].map((month, index) => (
-                <option
-                  key={month}
-                  value={index + 1}
-                >
+                <option key={month} value={index + 1}>
                   {month}
                 </option>
               ))}
@@ -179,38 +157,35 @@ export default function AddBudgetModal({
           {/* Year */}
 
           <div>
-            <label className="block mb-2 font-medium">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Year
             </label>
 
             <input
               type="number"
               {...register("year")}
-              className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
           </div>
 
           {/* Footer */}
 
-          <div className="flex justify-end gap-3 pt-3">
-
+          <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={closeModal}
-              className="border rounded-xl px-6 py-3 hover:bg-gray-100"
+              className="rounded-xl border border-gray-300 px-6 py-3 text-gray-900 transition hover:bg-gray-100 dark:border-slate-700 dark:text-white dark:hover:bg-slate-800"
             >
               Cancel
             </button>
 
             <button
+              type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-6 py-3 disabled:opacity-50"
+              className="rounded-xl bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700 disabled:opacity-50"
             >
-              {isSubmitting
-                ? "Creating..."
-                : "Create Budget"}
+              {isSubmitting ? "Creating..." : "Create Budget"}
             </button>
-
           </div>
         </form>
       </div>
