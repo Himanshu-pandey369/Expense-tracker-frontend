@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 
 import { transactionSchema } from "../../utils/transactionValidation";
-import { updateTransaction } from "../../services/transactionService";
+import { updateTransaction } from "../../services/TransactionService";
 
 export default function EditTransactionModal({
   isOpen,

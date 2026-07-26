@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
-import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
-import Dashboard from "../pages/dashboard/Dashboard";
-import Transactions from "../pages/transactions/Transactions";
-import Budgets from "../pages/budgets/Budgets";
-import Profile from "../pages/profile/Profile";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import Transactions from "../pages/Transactions/Transactions";
+import Budgets from "../pages/Budgets/Budgets";
+import Profile from "../pages/Profile/Profile";
 import NotFound from "../pages/NotFound";
 
 export default function AppRoutes() {

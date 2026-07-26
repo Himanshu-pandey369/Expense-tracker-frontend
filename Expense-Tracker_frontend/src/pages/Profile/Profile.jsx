@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Mail, Calendar, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ProfileSkeleton from "../../Components/Profile/ProfileSkeleton";
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import DashboardLayout from "../../Components/layout/DashboardLayout";
 
 import { getProfile } from "../../services/userService";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 
 export default function Profile() {
   const navigate = useNavigate();

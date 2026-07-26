@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 import { useTheme } from "../../Context/ThemeContext";
 
 export default function Navbar() {

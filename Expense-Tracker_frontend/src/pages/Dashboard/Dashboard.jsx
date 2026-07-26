@@ -5,12 +5,12 @@ import {
   TrendingDown,
   Receipt,
 } from "lucide-react";
-import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
-import DashboardLayout from "../../components/layout/DashboardLayout";
-import SummaryCard from "../../components/dashboard/SummaryCard";
-import ExpenseChart from "../../components/dashboard/ExpenseChart";
-import CategoryChart from "../../components/dashboard/CategoryChart";
-import RecentTransactions from "../../components/dashboard/RecentTransaction";
+import DashboardSkeleton from "../../Components/dashboard/DashboardSkeleton";
+import DashboardLayout from "../../Components/layout/DashboardLayout";
+import SummaryCard from "../../Components/dashboard/SummaryCard";
+import ExpenseChart from "../../Components/dashboard/ExpenseChart";
+import CategoryChart from "../../Components/dashboard/CategoryChart";
+import RecentTransactions from "../../Components/dashboard/RecentTransaction";
 import QuickActions from "../../Components/dashboard/QuickAction";
 import {
   getDashboardSummary,

@@ -4,12 +4,12 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import DashboardLayout from "../../Components/layout/DashboardLayout";
 import BudgetSkeleton from "../../Components/budgets/BudgetSkeleton";
-import BudgetCard from "../../components/budgets/BudgetCard";
-import AddBudgetModal from "../../components/budgets/AddBudgetModal";
-import EditBudgetModal from "../../components/budgets/EditBudgetModel";
-import DeleteBudgetModal from "../../components/budgets/DeleteBudget";
+import BudgetCard from "../../Components/budgets/BudgetCard";
+import AddBudgetModal from "../../Components/budgets/AddBudgetModal";
+import EditBudgetModal from "../../Components/budgets/EditBudgetModel";
+import DeleteBudgetModal from "../../Components/budgets/DeleteBudget";
 
 import { getBudgets } from "../../services/budgetService";
 

@@ -1,7 +1,7 @@
 import { Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { deleteTransaction } from "../../services/transactionService";
+import { deleteTransaction } from "../../services/TransactionService";
 
 export default function DeleteTransactionModal({
   isOpen,

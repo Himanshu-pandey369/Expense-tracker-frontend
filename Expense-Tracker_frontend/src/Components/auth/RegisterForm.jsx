@@ -9,7 +9,7 @@ import Button from "../ui/Button";
 
 import { registerSchema } from "../../utils/validation";
 import { registerUser } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
