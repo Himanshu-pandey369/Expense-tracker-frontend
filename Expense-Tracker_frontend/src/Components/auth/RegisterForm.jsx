@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import toast from "react-hot-toast";
 
 import Input from "../ui/Input";
@@ -15,15 +13,12 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
-
   const { login } = useAuth();
-
   const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
@@ -41,14 +36,10 @@ export default function RegisterForm() {
 
       await login(response.token);
 
-      toast.success(`Welcome, ${response.user.name}! 🎉`);
-
+      toast.success("Account created successfully!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Registration Failed"
-      );
+      toast.error(error.response?.data?.message || "Registration Failed");
     } finally {
       setLoading(false);
     }
@@ -57,21 +48,14 @@ export default function RegisterForm() {
   return (
     <>
       <div className="text-center mb-8">
-
-        <h1 className="text-4xl font-bold text-blue-600">
-          SpendWise
-        </h1>
-
-        <p className="mt-2 text-gray-500">
-          Create your account 🚀
-        </p>
-
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-2xl font-bold text-white shadow-lg">
+          S
+        </div>
+        <h1 className="text-4xl font-bold text-white">SpendWise</h1>
+        <p className="mt-2 text-slate-300">Create your account 🚀</p>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Input
           label="Full Name"
           type="text"
@@ -104,23 +88,19 @@ export default function RegisterForm() {
           error={errors.confirmPassword}
         />
 
-        <Button
-          type="submit"
-          loading={loading}
-        >
+        <Button type="submit" loading={loading}>
           Create Account
         </Button>
 
-        <p className="text-center text-gray-500">
+        <p className="text-center text-slate-300">
           Already have an account?{" "}
           <Link
             to="/"
-            className="font-semibold text-blue-600 hover:underline"
+            className="font-semibold text-blue-300 hover:underline"
           >
             Login
           </Link>
         </p>
-
       </form>
     </>
   );

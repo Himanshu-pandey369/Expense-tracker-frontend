@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import toast from "react-hot-toast";
 
 import Input from "../ui/Input";
@@ -15,9 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function LoginForm() {
   const navigate = useNavigate();
-
   const { login } = useAuth();
-
   const [loading, setLoading] = useState(false);
 
   const {
@@ -33,16 +29,12 @@ export default function LoginForm() {
       setLoading(true);
 
       const response = await loginUser(data);
-
       await login(response.token);
 
-      toast.success("Login Successful");
-
+      toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Login Failed"
-      );
+      toast.error(error.response?.data?.message || "Login Failed");
     } finally {
       setLoading(false);
     }
@@ -51,19 +43,14 @@ export default function LoginForm() {
   return (
     <>
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-blue-600">
-          SpendWise
-        </h1>
-
-        <p className="mt-2 text-gray-500">
-          Welcome back 👋
-        </p>
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-2xl font-bold text-white shadow-lg">
+          S
+        </div>
+        <h1 className="text-4xl font-bold text-white">SpendWise</h1>
+        <p className="mt-2 text-slate-300">Welcome back 👋</p>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Input
           label="Email"
           type="email"
@@ -83,24 +70,21 @@ export default function LoginForm() {
         <div className="flex justify-end">
           <button
             type="button"
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-blue-300 hover:underline"
           >
             Forgot Password?
           </button>
         </div>
 
-        <Button
-          type="submit"
-          loading={loading}
-        >
+        <Button type="submit" loading={loading}>
           Login
         </Button>
 
-        <p className="text-center text-gray-500">
-          Don't have an account?{" "}
+        <p className="text-center text-slate-300">
+          Don&apos;t have an account?{" "}
           <Link
             to="/register"
-            className="font-semibold text-blue-600 hover:underline"
+            className="font-semibold text-blue-300 hover:underline"
           >
             Register
           </Link>
